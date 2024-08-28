@@ -46,11 +46,11 @@ exports.signup  = async (req,res) =>{
 
 }
 
-exports.signin = await (req,res) => {
+exports.signin = async (req,res) => {
 
     // check if the user id is present in the system
 
-    const user = async user_model.findOne({userId : req.body.userId})
+    const user = await user_model.findOne({userId : req.body.userId})
 
     if(user == null){
       return res.status(400).send({
@@ -70,6 +70,12 @@ exports.signin = await (req,res) => {
 
     const token = jwt.sign({id : user.userId}, secret.secret,{expiresIn : 120})
 
-
+    res.status(201).send({
+        name : user.name,
+        userId : user.userId,
+        email : user.email,
+        userType : user.userType,
+        accessToken : token
+    })
 
 }
